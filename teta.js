@@ -1,6 +1,6 @@
 let language = "pt-PT";
 let memory = [];
-let userState = { humor: "normal" }; // mini-cérebro
+let userState = { humor: "normal" };
 let dati = new Date()
 let minuto = dati.getMinutes()
 let timel = dati.getHours()
@@ -99,23 +99,16 @@ async function analyzeImageTF(event) {
   reader.onload = async function () {
     const img = new Image();
     img.onload = async function () {
-      // carregar modelo COCO-SSD
       const model = await cocoSsd.load();
-      
-      // criar canvas para desenhar resultados
       const canvas = document.getElementById("canvas");
       const ctx = canvas.getContext("2d");
       canvas.width = img.width;
       canvas.height = img.height;
       ctx.drawImage(img, 0, 0, img.width, img.height);
-
-      // correr deteção
       const predictions = await model.detect(img);
 
       if (predictions.length > 0) {
         let desc = predictions.map(p => `${p.class} (${Math.round(p.score * 100)}%)`).join(", ");
-        
-        // desenhar bounding boxes
         predictions.forEach(pred => {
           ctx.strokeStyle = "lime";
           ctx.lineWidth = 3;
@@ -124,11 +117,9 @@ async function analyzeImageTF(event) {
           ctx.fillStyle = "red";
           ctx.fillText(pred.class, pred.bbox[0], pred.bbox[1] > 20 ? pred.bbox[1] - 5 : 20);
         });
-
         const msg = `Identifiquei estes mambos: ${desc}`;
         addMessage("TETA", msg);
         speak(msg);
-
       } else {
         addMessage("TETA", "Não saquei nada na foto 🤷🏾‍♂️, tá confusa essa cena.");
         speak("Não consegui identificar.");
@@ -139,11 +130,9 @@ async function analyzeImageTF(event) {
   reader.readAsDataURL(file);
 }
 
-
 // ---------- MINI-CÉREBRO ----------
 function generateResponse(text) {
   const t = text.toLowerCase();
-  const last = memory.length > 0 ? memory[memory.length - 1].text.toLowerCase() : "";
 
   if (t.includes("quem es tu") || t.includes("quem és tu") || t.includes("quem tu es")) {
     return "Eu sou a TETA AI 🤖, tua amiga de conversa, angolana de raiz! 🇦🇴";
@@ -172,8 +161,13 @@ function generateResponse(text) {
   }
   if (t.includes("kuduro")) {
     return "🔥 Kuduro é dos duros, dança que parte chão! Só quem é de Angola entende a energia!";
+
+  // Novos idiomas
+  if(t.includes("bonjour") || t.includes("salut")) return "Salut! Comment ça va? 😎"; // francês
+  if(t.includes("hallo") || t.includes("guten tag")) return "Hallo! Wie geht's dir? 🔥"; // alemão
+  if(t.includes("ciao") || t.includes("salve")) return "Ciao! Come stai? 😁"; // italiano
+  if(t.includes("你好") || t.includes("您好")) return "你好! 今天怎么样？🤖"; // chinês mandarim
   }
   
-  // fallback criativo
   return null;
 }

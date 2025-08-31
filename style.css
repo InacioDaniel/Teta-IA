@@ -1,67 +1,71 @@
 body {
-  font-family: Arial, sans-serif;
-  background: linear-gradient(to right, #830142, #021d44);
-  color: white;
-  padding-top: 50px;
-  width: 50%;
-  margin: auto;
+  background: linear-gradient(135deg, #1a1a2e, #162447);
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
   justify-content: center;
-  align-items: center;
-  text-align: center;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 }
 
 #app {
-  background: rgba(255, 255, 255, 0.1);
-  padding: 2rem;
+  background: rgba(255, 255, 255, 0.05);
   border-radius: 20px;
-  max-width: 600px;
   width: 100%;
+  max-width: 720px;
 }
-
-#chat {
-  background: rgba(255, 255, 255, 0.1);
-  min-height: 350px;
-  padding: 1em;
-  margin-bottom: 1em;
-  border-radius: 10px;
-  overflow-y: auto;
+h1 {
+	color: #fff;
+}
+.chat-box {
+  background: rgba(255,255,255,0.1);
+  border-radius: 12px;
+  min-height: 400px;
   max-height: 550px;
-  text-align: left;
+  padding: 1rem;
+  overflow-y: auto;
+  scroll-behavior: smooth;
 }
 
-button, select {
-  background: linear-gradient(to right, #c00261, #053b86);
-  color: #fff;
-  padding: 10px;
-  margin: 5px 0;
-  border: none;
-  border-radius: 10px;
-  width: 100%;
-  box-sizing: border-box;
-} select:focus {
-  color: #000;
+.chat-box p {
+  color: #ffffff; /* texto branco para todos */
+  padding: 6px 10px;
+  border-radius: 8px;
+  margin-bottom: 6px;
+  word-wrap: break-word;
 }
-button {
-  background: linear-gradient(to left, #c00261, #053b86);
-  color: #ffffff;
-  text-shadow: 02px 02px 02px black;
-  font-weight: bold;
-  font-family: Arial, Helvetica, sans-serif;
-  font-size: 17pt;
+
+/* Diferenciar mensagens do usuário e da TETA AI */
+.chat-box p strong {
+  color: #ffffff; /* mantém o nome também branco */
+}
+
+.chat-box p:nth-child(odd) {
+  background: rgba(255, 255, 255, 0.05); /* fundo leve para mensagens do usuário */
+}
+
+.chat-box p:nth-child(even) {
+  background: rgba(255, 255, 255, 0.08); /* fundo levemente diferente para TETA */
 }
 
 .focusede {
-  background: linear-gradient(to right, #c00261, #053b86);
-  color: #fff;
-  padding: 10px;
-  margin: 5px 0;
-  border: none;
-  border-radius: 10px;
-  width: 100%;
-  box-sizing: border-box;
-}.focusede:hover {
-  background: linear-gradient(to left, #7c023f, #03224d);
-}.focusede:focus{
-  background: white;
-  color: black;
+  border-radius: 12px;
+  transition: all 0.3s ease;
+}
+
+.focusede:focus {
+  box-shadow: 0 0 12px #fff;
+  background: #fff;
+  color: #000;
+}
+
+.btn-gradient {
+  background: linear-gradient(90deg, #6a0572, #570861);
+  color: white;
+  font-weight: bold;
+  transition: all 0.3s ease;
+}
+
+.btn-gradient:hover {
+  transform: scale(1.05);
+  box-shadow: 0 6px 20px rgba(0,0,0,0.4);
 }
