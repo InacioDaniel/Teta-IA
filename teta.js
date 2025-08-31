@@ -1,5 +1,6 @@
 let language = "pt-PT";
 let memory = [];
+let userState = { humor: "normal" }; // mini-cérebro
 let dati = new Date()
 let minuto = dati.getMinutes()
 let timel = dati.getHours()
@@ -10,60 +11,16 @@ let mes
 let ano = dati.getFullYear()
 
 function momente() {
-//Definindo momentos do dia
-  if (timel < 10) {
-    moment = "do Dia"
-    
-  } 
-  
-  if (timel >= 10){
-    moment = "da Tarde"
-    
-  }
-  
-  if (timel >= 18){
-    moment = "da Noite"
-    
-  } 
-//Definindo Meses do ano
-  if (mese == 0) {
-    mes = "Janeiro"
-  }
-  if (mese == 1) {
-    mes = "Fevereiro"
-  }
-  if (mese == 2) {
-    mes = "Março"
-  }
-  if (mese == 3) {
-    mes = "Abril"
-  }
-  if (mese == 4) {
-    mes = "Maio"
-  }
-  if (mese == 5) {
-    mes = "Junho"
-  }
-  if (mese == 6) {
-    mes = "Julho"
-  }
-  if (mese == 7) {
-    mes = "Agosto"
-  }
-  if (mese == 8) {
-    mes = "Setembro"
-  }
-  if (mese == 9) {
-    mes = "Outubro"
-  }
-  if (mese == 10) {
-    mes = "Novembro"
-  }
-  if (mese == 11) {
-    mes = "Dezembro"
-  }
+  if (timel < 10) moment = "da Manhã";
+  else if (timel < 18) moment = "da Tarde";
+  else moment = "da Noite";
+
+  const meses = ["Janeiro","Fevereiro","Março","Abril","Maio","Junho","Julho",
+                 "Agosto","Setembro","Outubro","Novembro","Dezembro"];
+  mes = meses[mese];
 }
 momente()
+
 function setLanguage() {
   language = document.getElementById("language").value;
 }
@@ -94,9 +51,9 @@ async function handleText() {
     addMessage("TETA", resp);
     speak(resp);
   } else {
-    addMessage("TETA", "Deixe-me consultar na internet...");
+    addMessage("TETA", "Hmm... deixa ver esse mambo 🤔...");
     const wiki = await wikiSearch(text);
-    const output = wiki || "Desculpe, não encontrei nada relevante.";
+    const output = wiki || "Ainda não sei bem desse mambo, mas bora pesquisar junto. 😉";
     addMessage("TETA", output);
     speak(output);
   }
@@ -119,7 +76,7 @@ async function wikiSearch(query) {
 function extractKeyword(text) {
   let clean = text.toLowerCase().normalize("NFD").replace(/[̀-ͯ]/g, "");
   let words = clean.split(" ");
-  let keywords = words.filter(w => !["?","!","o", "a", "os", "as", "sobre", "da", "do", "de", "por", "em", "um", "uma", "qual","qualé" ,"que", "tu", "sabes","voce","você","já","estava","no","na","nos","nas","me","ma","este","esse","aquele mambo","ola"].includes(w));
+  let keywords = words.filter(w => !["?","!","o","a","os","as","sobre","da","do","de","por","em","um","uma","que","tu","sabes","voce","já","no","na","nos","nas"].includes(w));
   return keywords.slice(-1)[0] || clean;
 }
 
@@ -136,80 +93,64 @@ function startVoice() {
 async function analyzeImageTF(event) {
   const file = event.target.files[0];
   if (!file) return;
-  addMessage("TETA", "A analisar a imagem...");
+  addMessage("TETA", "A analisar a imagem... 🖼️");
 
   const reader = new FileReader();
   reader.onload = async function () {
     const img = new Image();
     img.onload = async function () {
-      const canvas = document.getElementById("canvas");
-      canvas.width = 224;
-      canvas.height = 224;
-      const ctx = canvas.getContext("2d");
-      ctx.drawImage(img, 0, 0, 224, 224);
-
       const model = await mobilenet.load();
-      const predictions = await model.classify(canvas);
+      const predictions = await model.classify(img);
 
       if (predictions && predictions.length > 0) {
         const result = predictions[0];
-        const message = `Esta imagem parece mostrar ${result.className}, com ${(result.probability * 100).toFixed(1)}% de certeza.`;
+        const message = `😎 Esse mambo parece ser **${result.className}**, com ${(result.probability * 100).toFixed(1)}% de certeza.`;
         addMessage("TETA", message);
         speak(message);
       } else {
-        addMessage("TETA", "Não consegui identificar o que está na imagem.");
-        speak("Não consegui identificar o que está na imagem.");
+        addMessage("TETA", "Não consegui sacar o que tá nessa foto 😅");
+        speak("Não consegui identificar.");
       }
     };
     img.src = reader.result;
   };
   reader.readAsDataURL(file);
-
 }
 
+// ---------- MINI-CÉREBRO ----------
 function generateResponse(text) {
-  const t = text.toLowerCase().normalize("NFD").replace(/[̀-ͯ]/g, "");
+  const t = text.toLowerCase();
   const last = memory.length > 0 ? memory[memory.length - 1].text.toLowerCase() : "";
 
   if (t.includes("quem es tu") || t.includes("quem és tu") || t.includes("quem tu es")) {
-    return "Eu sou a TETA AI, tua parceira de conversa e conhecimento! <br>Hello My name is TETA IA, yours friends of the conversation!"
+    return "Eu sou a TETA AI 🤖, tua amiga de conversa, angolana de raiz! 🇦🇴";
   }
-
   if (t.includes("bom dia") || t.includes("boa tarde") || t.includes("boa noite") || t.includes("olá") || t.includes("oi")){
-    return "Olá! Como posso te ajudar hoje?";
+    return "Qualé nengue 😎! Como tás hoje?";
   }
-  if (t.includes("wy") || t.includes("brother") || t.includes("qualé") || t.includes("nengue") || t.includes("mano")){
-    return "Qualé wy, tás fixe?";
+  if (t.includes("mano") || t.includes("nengue") || t.includes("wy") || t.includes("brother")){
+    return "Ya wy, firmeza? Tudo tranquilo contigo? 🔥";
   }
-  if (t.includes("quem fez te") || t.includes("quem criou te") || t.includes("quem desenvolveu te") || t.includes("quem te fez") || t.includes("quem te criou") || t.includes("quem te desenvolveu")) {
-    return "A TETA IA foi desenvolvida por Inácio.u.daniel 100% html e javascript puro limitando se apenas a usar apis para reconhecimento de imagem!";
+  if (t.includes("obrigado") || t.includes("valeu") || t.includes("obas")) {
+    return "Não tens de quê, tamos juntos no mambo! 💯";
   }
-  if (t.includes("boa") || t.includes("fine") || t.includes("bem") || t.includes("nice") || t.includes("feliz") || t.includes("good")) {
-    return "Bom saber disso! para que seu dia seja ainda melhor eu estou aqui para ti!";
-  }
-  if (t.includes("obrigado") || t.includes("valeu") || t.includes("Obas")) {
-    return "Não tens de quê wy! Estou sempre aqui para ti.";
-  }
-  if (t.includes("estás bem") || t.includes("vcomo estás") || t.includes("passas bem")) {
-    return "yha wy, estou bem!";
-  }
-  if (t.includes("mambo") || t.includes("rijo")) {
-    return "Estás na boa! esse Mambo é dos duro, e kuduro é ritmo mais quante de angola!";
-  }
-  if (t.includes("ideia") || t.includes("novidades")) {
-    return "Estou a esperar da tua parte!";
-  }
-  if (t.includes("Kuduaira") || t.includes("BKuduro") || t.includes("kuduro")) {
-    return "Kuduo é o mais popular estilo musical de angola, com danças épicas e loucas, sempre a aquecer o teu dia e a banda(bairro), dos artistas que fazem a festa!";
+  if (t.includes("estás bem") || t.includes("como estás")) {
+    userState.humor = "feliz";
+    return "Tou bem rijo 😁, só na boa. E tu, como tás?";
   }
   if (t.includes("hora") || t.includes("time")) {
-    return "Neste momento são "+timel+":"+minuto+" horas "+moment;
+    return `Agora são ${timel}:${minuto} horas ${moment} ⏰`;
   }
   if (t.includes("data") || t.includes("dia")) {
-    return "hoje é dia "+data+" de "+mes+" de "+ano;
+    return `Hoje é ${data} de ${mes} de ${ano} 📅`;
   }
-  if (t.includes("Angola") || t.includes("Mangole")) {
-    return "Angola é um país localizado na zona Austral de África e banhada pelo oceano atlântico, faz fronteira com a RDC, ZAMBIA, NAMIBIA, RC. A língua mais falada em Angola é a língua portuguesa.";
+  if (t.includes("angola")) {
+    return "🇦🇴 Angola é o coração de África! Terra do semba, kuduro, funge e alegria!";
   }
+  if (t.includes("kuduro")) {
+    return "🔥 Kuduro é dos duros, dança que parte chão! Só quem é de Angola entende a energia!";
+  }
+  
+  // fallback criativo
   return null;
 }
