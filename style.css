@@ -1,71 +1,101 @@
+/* --- BODY --- */
 body {
-  background: linear-gradient(135deg, #1a1a2e, #162447);
+  background: linear-gradient(135deg, #0f0c29, #302b63, #24243e);
   min-height: 100vh;
   display: flex;
   flex-direction: column;
   justify-content: center;
   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  color: white;
 }
 
+/* --- APP CARD --- */
 #app {
   background: rgba(255, 255, 255, 0.05);
-  border-radius: 20px;
+  border-radius: 25px;
   width: 100%;
-  max-width: 720px;
+  max-width: 750px;
+  padding: 2rem;
+  animation: fadeIn 1s ease-in-out;
+  box-shadow: 0 8px 25px rgba(0,0,0,0.5);
 }
-h1 {
-	color: #fff;
-}
+
+/* --- CHAT BOX --- */
 .chat-box {
-  background: rgba(255,255,255,0.1);
-  border-radius: 12px;
-  min-height: 400px;
-  max-height: 550px;
+  background: rgba(255,255,255,0.08);
+  border-radius: 15px;
+  min-height: 450px;
+  max-height: 600px;
   padding: 1rem;
   overflow-y: auto;
   scroll-behavior: smooth;
+  transition: all 0.3s ease-in-out;
 }
 
 .chat-box p {
-  color: #ffffff; /* texto branco para todos */
-  padding: 6px 10px;
-  border-radius: 8px;
-  margin-bottom: 6px;
+  color: #ffffff;
+  padding: 8px 12px;
+  border-radius: 10px;
+  margin-bottom: 8px;
   word-wrap: break-word;
+  opacity: 0;
+  transform: translateY(10px);
+  animation: messageFade 0.4s forwards;
 }
 
-/* Diferenciar mensagens do usuário e da TETA AI */
 .chat-box p strong {
-  color: #ffffff; /* mantém o nome também branco */
+  color: #ffffff;
 }
 
 .chat-box p:nth-child(odd) {
-  background: rgba(255, 255, 255, 0.05); /* fundo leve para mensagens do usuário */
+  background: rgba(255, 255, 255, 0.05);
 }
 
 .chat-box p:nth-child(even) {
-  background: rgba(255, 255, 255, 0.08); /* fundo levemente diferente para TETA */
+  background: rgba(255, 255, 255, 0.12);
 }
 
+/* --- INPUT FOCUS --- */
 .focusede {
-  border-radius: 12px;
+  border-radius: 15px;
   transition: all 0.3s ease;
 }
 
 .focusede:focus {
-  box-shadow: 0 0 12px #fff;
+  box-shadow: 0 0 15px #fff;
   background: #fff;
   color: #000;
 }
 
+/* --- BUTTONS --- */
 .btn-gradient {
   background: linear-gradient(90deg, #6a0572, #570861);
   color: white;
   font-weight: bold;
   transition: all 0.3s ease;
+  border-radius: 15px;
+  box-shadow: 0 4px 15px rgba(0,0,0,0.3);
 }
 
 .btn-gradient:hover {
   transform: scale(1.05);
-  box-shadow: 0 6px 20px rgba(0,0,0,0.4);
+  box-shadow: 0 8px 25px rgba(0,0,0,0.6);
+}
+
+/* --- ANIMAÇÕES --- */
+@keyframes fadeIn {
+  0% { opacity: 0; transform: translateY(-20px); }
+  100% { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes messageFade {
+  0% { opacity: 0; transform: translateY(10px); }
+  100% { opacity: 1; transform: translateY(0); }
+}
+
+/* --- FOOTER --- */
+footer h5 {
+  color: #fff;
+  font-weight: 500;
+  text-shadow: 1px 1px 5px rgba(0,0,0,0.3);
 }

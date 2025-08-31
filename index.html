@@ -3,19 +3,20 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>TETA AI - Inteligência Artificial Angolana</title>
+  <title>TETA AI - Inteligência Artificial Avançada</title>
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
   <link rel="stylesheet" href="style.css" />
 </head>
 <body>
-  <div class="container py-5 d-flex justify-content-center">
+  <div class="container py-5 d-flex justify-content-center align-items-center min-vh-100">
     <div id="app" class="card shadow-lg p-4">
       <h1 class="text-center mb-4">TETA AI 🤖</h1>
       <div id="chat" class="chat-box mb-3"></div>
-      
+
       <div class="mb-3">
         <input type="text" id="userInput" class="form-control focusede" placeholder="Escreve aqui..." />
       </div>
+
       <div class="d-flex gap-2 mb-3 flex-wrap">
         <button class="btn btn-gradient flex-fill" onclick="handleText()">Enviar</button>
         <button class="btn btn-gradient flex-fill" onclick="startVoice()">🎤</button>
@@ -27,6 +28,16 @@
           <option value="de-DE">Deutsch</option>
           <option value="it-IT">Italiano</option>
           <option value="zh-CN">中文</option>
+          <option value="ar">العربية</option>
+          <option value="ru">Русский</option>
+          <option value="ja">日本語</option>
+          <option value="ko">한국어</option>
+          <option value="nl">Nederlands</option>
+          <option value="sv">Svenska</option>
+          <option value="tr">Türkçe</option>
+          <option value="hi">हिंदी</option>
+          <option value="el">Ελληνικά</option>
+          <option value="pl">Polski</option>
         </select>
       </div>
 
