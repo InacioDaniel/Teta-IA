@@ -28,10 +28,16 @@
     <input type="file" accept="image/*" onchange="analyzeImageTF(event)" />
     <canvas id="canvas" style="display:none;"></canvas>
   </div>
-</div>
- <center>
+  </div>
+  <center>
 	<h2>Teta IA by @inacio.u.daniel</h2>
-</center>	
+  </center>
+  <script>
+     if ('serviceWorker' in navigator) {
+         navigator.serviceWorker.register('/sw.js').then(()=>console.log('SW registado'));
+     }
+</script>
+
   <script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs@4.14.0/dist/tf.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/@tensorflow-models/mobilenet"></script>
   <script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs"></script>
