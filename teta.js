@@ -93,22 +93,44 @@ function startVoice() {
 async function analyzeImageTF(event) {
   const file = event.target.files[0];
   if (!file) return;
-  addMessage("TETA", "A analisar a imagem... 🖼️");
+  addMessage("TETA", "Já tou a analizar a imagem... segura aí 👀🖼️");
 
   const reader = new FileReader();
   reader.onload = async function () {
     const img = new Image();
     img.onload = async function () {
-      const model = await mobilenet.load();
-      const predictions = await model.classify(img);
+      // carregar modelo COCO-SSD
+      const model = await cocoSsd.load();
+      
+      // criar canvas para desenhar resultados
+      const canvas = document.getElementById("canvas");
+      const ctx = canvas.getContext("2d");
+      canvas.width = img.width;
+      canvas.height = img.height;
+      ctx.drawImage(img, 0, 0, img.width, img.height);
 
-      if (predictions && predictions.length > 0) {
-        const result = predictions[0];
-        const message = `😎 Esse mambo parece ser **${result.className}**, com ${(result.probability * 100).toFixed(1)}% de certeza.`;
-        addMessage("TETA", message);
-        speak(message);
+      // correr deteção
+      const predictions = await model.detect(img);
+
+      if (predictions.length > 0) {
+        let desc = predictions.map(p => `${p.class} (${Math.round(p.score * 100)}%)`).join(", ");
+        
+        // desenhar bounding boxes
+        predictions.forEach(pred => {
+          ctx.strokeStyle = "lime";
+          ctx.lineWidth = 3;
+          ctx.strokeRect(...pred.bbox);
+          ctx.font = "18px Arial";
+          ctx.fillStyle = "red";
+          ctx.fillText(pred.class, pred.bbox[0], pred.bbox[1] > 20 ? pred.bbox[1] - 5 : 20);
+        });
+
+        const msg = `Identifiquei estes mambos: ${desc}`;
+        addMessage("TETA", msg);
+        speak(msg);
+
       } else {
-        addMessage("TETA", "Não consegui sacar o que tá nessa foto 😅");
+        addMessage("TETA", "Não saquei nada na foto 🤷🏾‍♂️, tá confusa essa cena.");
         speak("Não consegui identificar.");
       }
     };
@@ -116,6 +138,7 @@ async function analyzeImageTF(event) {
   };
   reader.readAsDataURL(file);
 }
+
 
 // ---------- MINI-CÉREBRO ----------
 function generateResponse(text) {
