@@ -2,6 +2,7 @@ let language = "pt-PT";
 let memory = []; // memória apenas em sessão
 let userState = { humor: "normal", lastTopic: "" }; // estado do usuário em sessão
 let dati = new Date();
+let estilo = document.getElementById("stylesheet")
 let minuto = dati.getMinutes();
 let timel = dati.getHours();
 let moment = "dia";
@@ -10,6 +11,24 @@ let mese = dati.getMonth();
 let mes;
 let ano = dati.getFullYear();
 
+function light_theme() {
+ estilo.innerHTML = "body{background: linear-gradient(135deg, #ff026b, #ff748b, #ff9cab); color: white;}"
+}
+function dark_theme() {
+  estilo.innerHTML = "body{background: linear-gradient(135deg, #330116, #50222a, #311c1f); color: white;}"
+}
+function blue_theme() {
+  estilo.innerHTML = "body{background: linear-gradient(135deg, #5869ff, #4040ff, #99aaff); color: white;}"
+}
+function blue_dark_theme() {
+  estilo.innerHTML = "body{background: linear-gradient(135deg, #1f0e56, #4040ff, #160540); color: white;}"
+}
+function green_theme() {
+  estilo.innerHTML = "body{background: linear-gradient(135deg, #4eff80, #6effb7, #0aea24); color: black;}"
+}
+function green_dark_theme() {
+  estilo.innerHTML = "body{background: linear-gradient(135deg, #1a6200, #0a743f, #008c36); color: white;}"
+}
 function momente() {
   if (timel < 10) moment = "da Manhã";
   else if (timel < 18) moment = "da Tarde";
@@ -43,12 +62,12 @@ async function handleText() {
   const text = input.value.trim();
   if (!text) return;
 
-  addMessage("Você", text);
+  addMessage("Você 👤 ", text);
   input.value = "";
 
   let resp = generateResponse(text);
   if (resp) {
-    addMessage("TETA", resp);
+    addMessage("TETA 💠 ", resp);
     speak(resp);
     return;
   }
@@ -145,8 +164,10 @@ async function analyzeImageTF(event) {
 function generateResponse(text) {
   const t = text.toLowerCase();
 
-  if (t.includes("quem es tu") || t.includes("quem és tu") || t.includes("quem tu es"))
+  if (t.includes("quem es tu") || t.includes("quem és tu") || t.includes("quem tu es") || t.includes("quem és") || t.includes("quem es"))
     return "Eu sou a TETA AI 🤖, tua amiga de conversa, angolana de raiz! 🇦🇴";
+  if (t.includes("quem te fez") || t.includes("quem te criou") || t.includes("quem te desenvolveu"))
+    return "Eu TETA AI 🤖, tua amiga de conversa, voltada a todo tipo de pessoas incluindo deficientes audio e visual fui desenvolvida por @inacio.u.daniel e o seu ajudante Clério Cuita!";
   if (t.includes("bom dia") || t.includes("boa tarde") || t.includes("boa noite") || t.includes("olá") || t.includes("oi"))
     return "Qualé nengue 😎! Como tás hoje?";
   if (t.includes("mano") || t.includes("nengue") || t.includes("wy") || t.includes("brother"))

@@ -1,6 +1,5 @@
 /* --- BODY --- */
 body {
-  background: linear-gradient(135deg, #0f0c29, #302b63, #24243e);
   min-height: 100vh;
   display: flex;
   flex-direction: column;
@@ -98,4 +97,20 @@ footer h5 {
   color: #fff;
   font-weight: 500;
   text-shadow: 1px 1px 5px rgba(0,0,0,0.3);
+}
+
+.fixacao {
+  position: fixed;
+  top: 1%;
+  left: 18%;
+}
+
+.btn-primary_dark {
+   background-color: #0a214d;
+   color: #fff;
+}
+
+.btn-success_dark {
+  background-color: #103d15;
+  color: #fff;  
 }
