@@ -100,7 +100,7 @@ footer h5 {
 }
 
 .fixacao {
-  position: fixed;
+  position: absolute;
   top: 1%;
   left: 18%;
 }
